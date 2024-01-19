@@ -1,25 +1,13 @@
-# Estágio de Construção
-FROM node:lts as build-stage
-
-# Criação do diretório de trabalho
+# build stage
+FROM node:lts-alpine as build-stage
 WORKDIR /app
-
-# Copia os arquivos necessários
 COPY package*.json ./
-COPY . .
-
-# Instalação das dependências
 RUN npm install
-
-# Build da aplicação Vue.js
+COPY . .
 RUN npm run build
 
-# Estágio de Produção
-FROM nginx:alpine as production-stage
-
-# Copia os arquivos construídos para o estágio de produção
+# production stage
+FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-# Configuração do Nginx
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

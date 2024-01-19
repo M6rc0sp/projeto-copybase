@@ -1,27 +1,28 @@
-# Estágio de Construção
-FROM node:lts as build-stage
+# Estágio de Desenvolvimento
+FROM node:lts AS development
 
-# Criação do diretório de trabalho
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copia os arquivos necessários
-COPY package*.json ./
-COPY . .
+COPY ./backend/package*.json ./
 
-# Instalação das dependências
-RUN npm install
+RUN npm install glob rimraf
+RUN npm install --only=development
 
-# Build do Nest.js (se necessário, ajuste para o seu caso)
+COPY ./backend .
+
 RUN npm run build
 
 # Estágio de Produção
-FROM node:lts-alpine as production-stage
+FROM node:lts as production
 
-# Copia apenas os arquivos necessários para o estágio de produção
-COPY --from=build-stage /app/dist /app/dist
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
 
-# Exponha a porta necessária
-EXPOSE 3000
+WORKDIR /usr/src/app
 
-# Comando para iniciar o servidor (ajuste conforme necessário)
-CMD ["node", "/app/dist/main.js"]
+COPY --from=development /usr/src/app/package*.json ./
+RUN npm install --only=production
+
+COPY --from=development /usr/src/app/dist ./dist
+
+CMD ["node", "dist/main"]
