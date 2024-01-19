@@ -1,23 +1,43 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useQuasar } from 'quasar';
+import axios from 'axios';
 
 export default defineComponent({
   setup() {
     const file = ref<File | null>(null);
+    const $q = useQuasar();
 
     function handleFileUpload(event: Event) {
       const target = event.target as HTMLInputElement;
       file.value = target.files ? target.files[0] : null;
     }
 
-    function submitFile() {
-      if (!file.value) return;
+    async function submitFile() {
+      if (!file.value) {
+        $q.notify({
+          type: 'negative',
+          message: 'Por favor, selecione um arquivo antes de fazer o upload.'
+        });
+        return;
+      }
 
       let formData = new FormData();
       formData.append('file', file.value);
 
-      // Aqui você pode fazer uma chamada HTTP para enviar o arquivo para o servidor
-      // axios.post('/upload', formData);
+      try {
+        // Aqui você pode fazer uma chamada HTTP para enviar o arquivo para o servidor
+        await axios.post('/upload', formData);
+        $q.notify({
+          type: 'positive',
+          message: 'Upload bem-sucedido!'
+        });
+      } catch (error) {
+        $q.notify({
+          type: 'negative',
+          message: 'Ocorreu um erro durante o upload.'
+        });
+      }
     }
 
     return {
@@ -31,8 +51,7 @@ export default defineComponent({
 
 <template>
   <div>
-    <input type="file" @change="handleFileUpload" />
-    <button @click="submitFile">Upload</button>
+    <q-file v-model="file" label="Escolha um arquivo" @input="handleFileUpload" />
+    <q-btn @click="submitFile" label="Upload" />
   </div>
 </template>
-

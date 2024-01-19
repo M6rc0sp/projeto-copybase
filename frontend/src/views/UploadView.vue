@@ -3,7 +3,7 @@ import UploadForm from '../components/UploadForm.vue'
 </script>
 
 <template>
-  <main>
+  <q-page padding>
     <UploadForm />
-  </main>
+  </q-page>
 </template>
