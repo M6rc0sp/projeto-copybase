@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import { useQuasar } from 'quasar';
+import { defineComponent, inject, ref } from 'vue';
+import { useQuasar } from 'quasar'
 import axios from 'axios';
 
 export default defineComponent({
@@ -14,28 +14,32 @@ export default defineComponent({
     }
 
     async function submitFile() {
-      if (!file.value) {
-        $q.notify({
-          type: 'negative',
-          message: 'Por favor, selecione um arquivo antes de fazer o upload.'
-        });
-        return;
-      }
-
-      let formData = new FormData();
-      formData.append('file', file.value);
-
       try {
-        // Aqui você pode fazer uma chamada HTTP para enviar o arquivo para o servidor
-        await axios.post('/upload', formData);
+        if (!file.value) {
+          throw new Error('Por favor, selecione um arquivo antes de fazer o upload!');
+        }
+
+        let fileName = file.value.name;
+        let fileExtension = fileName.split('.').pop();
+
+        if (fileExtension !== 'csv' && fileExtension !== 'xlsx') {
+          file.value = null;
+          throw new Error('Formato de arquivo inválido. Por favor, envie um arquivo .csv ou .xlsx');
+        }
+
+        let formData = new FormData();
+        formData.append('file', file.value);
+
+        const response = await axios.post('http://localhost:3000/upload', formData);
+
         $q.notify({
           type: 'positive',
           message: 'Upload bem-sucedido!'
         });
-      } catch (error) {
+      } catch (error: any) {
         $q.notify({
           type: 'negative',
-          message: 'Ocorreu um erro durante o upload.'
+          message: error.message
         });
       }
     }
@@ -44,14 +48,14 @@ export default defineComponent({
       file,
       handleFileUpload,
       submitFile
-    };
+    }
   }
 });
 </script>
 
 <template>
-  <div>
+  <form @submit.prevent="submitFile">
     <q-file v-model="file" label="Escolha um arquivo" @input="handleFileUpload" />
-    <q-btn @click="submitFile" label="Upload" />
-  </div>
+    <q-btn type="submit" label="Upload" />
+  </form>
 </template>

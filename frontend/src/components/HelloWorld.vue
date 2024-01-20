@@ -4,10 +4,9 @@
   </q-page>
 </template>
 
-<style>
-</style>
+<style></style>
 
-<script>
+<script lang="ts">
 export default {
   name: 'HelloWorld'
 }
