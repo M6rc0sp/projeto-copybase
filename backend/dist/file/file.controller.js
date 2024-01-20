@@ -15,13 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
-const file_upload_dto_1 = require("./dto/file-upload.dto");
+const file_service_1 = require("./file.service");
 let FileController = class FileController {
-    uploadFile(file) {
-        console.log(file);
+    constructor(fileService) {
+        this.fileService = fileService;
     }
-    teste() {
-        return 'teste';
+    async uploadFile(file) {
+        const data = await this.fileService.handleFileUpload(file);
+        return data;
     }
 };
 exports.FileController = FileController;
@@ -30,16 +31,11 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [file_upload_dto_1.FileUploadDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], FileController.prototype, "uploadFile", null);
-__decorate([
-    (0, common_1.Get)('teste'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], FileController.prototype, "teste", null);
 exports.FileController = FileController = __decorate([
-    (0, common_1.Controller)()
+    (0, common_1.Controller)(),
+    __metadata("design:paramtypes", [file_service_1.FileService])
 ], FileController);
 //# sourceMappingURL=file.controller.js.map

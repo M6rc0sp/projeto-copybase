@@ -1,5 +1,7 @@
-import { FileUploadDto } from './dto/file-upload.dto';
+/// <reference types="multer" />
+import { FileService } from './file.service';
 export declare class FileController {
-    uploadFile(file: FileUploadDto): void;
-    teste(): string;
+    private readonly fileService;
+    constructor(fileService: FileService);
+    uploadFile(file: Express.Multer.File): Promise<void>;
 }

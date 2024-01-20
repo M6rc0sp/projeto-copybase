@@ -1,4 +1,4 @@
-import { MulterModule } from '@nestjs/platform-express';
+/// <reference types="multer" />
 export declare class FileService {
-    handleFileUpload(file: MulterModule): void;
+    handleFileUpload(file: Express.Multer.File): Promise<void>;
 }
