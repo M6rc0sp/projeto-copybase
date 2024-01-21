@@ -1,6 +1,6 @@
 <template>
-  <q-page padding class="row justify-center">
-    <q-card v-for="(item, index) in items" :key="index" class="q-ma-lg">
+  <q-page padding class="row justify-center q-gutter-md">
+    <q-card v-for="(item, index) in items" :key="index" class="q-ma-lg col-12 col-sm-6">
       <q-card-section>
         <div class="row items-center no-wrap">
           <div class="col text-center">
@@ -34,7 +34,18 @@ export default {
           link: 'https://vitejs.dev/guide/features.html',
           icon: 'build'
         },
-        // Adicione mais itens conforme necessário
+        {
+          title: 'Documentation',
+          description: 'Vue’s official documentation provides you with all information you need to get started.',
+          link: 'https://vuejs.org/',
+          icon: 'book'
+        },
+        {
+          title: 'Tooling',
+          description: 'This project is served and bundled with Vite. The recommended IDE setup is VSCode + Volar.',
+          link: 'https://vitejs.dev/guide/features.html',
+          icon: 'build'
+        },
       ]
     }
   }

@@ -1,10 +1,25 @@
+<template>
+  <form @submit.prevent="submitFile">
+    <div class="row no-wrap">
+      <div class="col">
+        <q-file v-model="file" label="Escolha um arquivo" filled standout="bg-orange-3" @input="handleFileUpload" />
+      </div>
+      <div class="col-auto">
+        <q-btn type="submit" label="Upload" class="q-ma-md" color="primary" />
+      </div>
+    </div>
+  </form>
+</template>
+
 <script lang="ts">
-import { defineComponent, inject, ref } from 'vue';
+import { defineComponent, provide, ref } from 'vue';
 import { useQuasar } from 'quasar'
 import axios from 'axios';
 
 export default defineComponent({
-  setup() {
+  setup(props, { emit }) {
+    const chartData = ref(null);
+    provide('chartData', chartData);
     const file = ref<File | null>(null);
     const $q = useQuasar();
 
@@ -31,11 +46,14 @@ export default defineComponent({
         formData.append('file', file.value);
 
         const response = await axios.post('http://localhost:3000/upload', formData);
-
+        console.log(response.data);
         $q.notify({
           type: 'positive',
           message: 'Upload bem-sucedido!'
         });
+        chartData.value = response.data;
+        console.log('updateData', chartData.value)
+        emit('updateData', chartData.value);
       } catch (error: any) {
         $q.notify({
           type: 'negative',
@@ -52,10 +70,3 @@ export default defineComponent({
   }
 });
 </script>
-
-<template>
-  <form @submit.prevent="submitFile">
-    <q-file v-model="file" label="Escolha um arquivo" @input="handleFileUpload" />
-    <q-btn type="submit" label="Upload" />
-  </form>
-</template>

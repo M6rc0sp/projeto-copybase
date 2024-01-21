@@ -16,8 +16,8 @@
 
       <q-tabs align="center">
         <q-route-tab to="/" label="Home" />
-        <q-route-tab to="/about" label="Sobre" />
         <q-route-tab to="/upload" label="Enviar" />
+        <q-route-tab to="/about" label="Sobre" />
       </q-tabs>
     </q-header>
 
