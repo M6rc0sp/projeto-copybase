@@ -1,96 +1,60 @@
 <template>
-  <div class="row chart">
+  <div v-if="hasData" class="row chart">
     <div class="col-8">
       <h1 class="text-h4">MRR</h1>
-      <canvas id="mrrChart"></canvas>
+      <ChartCanvas v-show="hasData" :data="mrrChartData" label="MRR" color="rgb(75, 192, 192)" />
     </div>
     <div class="col-8">
       <h1 class="text-h4">Churn Rate</h1>
-      <canvas id="churnRateChart"></canvas>
+      <ChartCanvas v-show="hasData" :data="churnRateChartData" label="Churn Rate" color="rgb(255, 99, 132)" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch } from 'vue';
-import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale } from 'chart.js';
+import { defineComponent, computed } from 'vue';
+import ChartCanvas from './ChartCanvas.vue';
 
-Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale);
+interface DataItem {
+  labels: string;
+  mrr: number;
+  churnRate: number;
+}
 
 export default defineComponent({
+  components: {
+    ChartCanvas,
+  },
   props: {
     data: {
-      type: Object,
-      default: () => ({})
+      type: Object as () => Record<string, DataItem>,
+      required: true
     }
   },
   setup(props) {
-    const createChart = () => {
-      if (props.data && Object.keys(props.data).length > 0) {
-        const labels = Object.keys(props.data);
-        const mrrData = labels.map(label => props.data[label]?.mrr);
-        const churnRateData = labels.map(label => props.data[label]?.churnRate);
+    const hasData = computed(() => Object.keys(props.data).length > 0);
 
-        new Chart(document.getElementById('mrrChart') as HTMLCanvasElement, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'MRR',
-              data: mrrData,
-              fill: false,
-              borderColor: 'rgb(75, 192, 192)',
-              tension: 0.1
-            }]
-          },
-          options: {
-            responsive: true,
-            plugins: {
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    var label = context.chart.data.labels ? context.chart.data.labels[context.dataIndex] : '';
-                    var value = context.dataset.data[context.dataIndex];
-                    return label + ': ' + value + '%';
-                  }
-                }
-              }
-            },
-          }
-        });
+    const mrrChartData = computed(() => {
+      if (!hasData.value) return [];
 
-        new Chart(document.getElementById('churnRateChart') as HTMLCanvasElement, {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'Churn Rate',
-              data: churnRateData,
-              fill: false,
-              borderColor: 'rgb(255, 99, 132)',
-              tension: 0.1
-            }]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  // Inclui um símbolo de porcentagem no final do valor do eixo y
-                  callback: function (value, index, values) {
-                    return value + '%';
-                  }
-                }
-              }
-            }
-          }
-        });
-      }
+      const labels = Object.keys(props.data);
+      const data = labels.map(label => props.data[label]?.mrr);
+      return labels.map((label, index) => ({ labels: label, data: data[index] }));
+    });
+
+    const churnRateChartData = computed(() => {
+      if (!hasData.value) return [];
+
+      const labels = Object.keys(props.data);
+      const data = labels.map(label => props.data[label]?.churnRate);
+      return labels.map((label, index) => ({ labels: label, data: data[index] }));
+    });
+
+    return {
+      hasData,
+      mrrChartData,
+      churnRateChartData,
     };
-
-    onMounted(createChart);
-    watch(() => props.data, createChart, { deep: true });
   }
 });
 </script>

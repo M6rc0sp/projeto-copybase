@@ -15,9 +15,15 @@ import Graph from '@/components/Graph.vue';
 
 import { ref } from 'vue';
 
-const chartData = ref<Record<string, { mrr: number, churnRate: number }> | undefined>(undefined);
+interface DataItem {
+  labels: string;
+  mrr: number;
+  churnRate: number;
+}
 
-const handleUpdateData = (newData: Record<string, { mrr: number, churnRate: number }>) => {
+const chartData = ref<Record<string, DataItem>>({});
+
+const handleUpdateData = (newData: Record<string, DataItem>) => {
   console.log('handleUpdateData', newData);
   chartData.value = newData;
 };
