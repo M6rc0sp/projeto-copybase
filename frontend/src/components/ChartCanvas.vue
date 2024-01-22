@@ -6,7 +6,7 @@
   
 <script lang="ts">
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
-import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip } from 'chart.js';
+import { Chart, LineController, LineElement, PointElement, LinearScale, Tooltip, Title, CategoryScale, type ChartOptions } from 'chart.js';
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, Tooltip, Title, CategoryScale);
 
@@ -35,14 +35,14 @@ export default defineComponent({
         let chart: Chart<'line', number[], string> | null = null;
 
         const chartData = computed(() => {
-            const labels = props.data.map(item => item.labels);
+            const labels = props.data.map(item => formatMonth(item.labels));
             const data = props.data.map(item => item.data);
 
             return {
-                labels: labels,
+                labels,
                 datasets: [{
                     label: props.label,
-                    data: data,
+                    data,
                     fill: false,
                     borderColor: props.color,
                     tension: 0.1
@@ -50,33 +50,69 @@ export default defineComponent({
             };
         });
 
+        const formatMonth = (label: string) => {
+            const [year, month] = label.split('-');
+            const monthName = new Date(`${year}-${month}-01`).toLocaleString('default', { month: 'short' });
+            return `${monthName}/${year.slice(-2)}`;
+        };
+
         const createChart = () => {
             if (chartCanvas.value) {
                 chart = new Chart<'line', number[], string>(chartCanvas.value, {
                     type: 'line',
                     data: chartData.value,
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            tooltip: {
-                                callbacks: {
-                                    label: function (context) {
-                                        let value: number | string = (context.dataset.data as number[])[context.dataIndex];
-
-                                        if (typeof value === 'number') {
-                                            value = props.label === 'MRR' ? formatCurrency(value) : Number(value).toFixed(2);
-                                        } else if (value === null) {
-                                            value = 'N/A';
-                                        }
-
-                                        return props.label + ': ' + value + (props.label === 'Churn Rate' ? '%' : '');
-                                    }
-                                }
-                            }
-                        },
-                    }
+                    options: getChartOptions() as ChartOptions<'line'>
                 });
             }
+        };
+
+        const getChartOptions = () => {
+            return {
+                responsive: true,
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: chartData.value.labels
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x'
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'x'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: formatTooltipLabel
+                        }
+                    }
+                }
+            };
+        };
+
+        const formatTooltipLabel = (context: { dataset: { data: number[] }, dataIndex: number }) => {
+            let value: number | string = (context.dataset.data as number[])[context.dataIndex];
+
+            if (typeof value === 'number') {
+                value = props.label === 'MRR' ? formatCurrency(value) : Number(value).toFixed(2);
+            } else if (value === null) {
+                value = 'N/A';
+            }
+
+            return props.label + ': ' + value + (props.label === 'Churn Rate' ? '%' : '');
         };
 
         function formatCurrency(amount: number) {
