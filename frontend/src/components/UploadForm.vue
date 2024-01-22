@@ -1,11 +1,12 @@
 <template>
   <form @submit.prevent="submitFile">
-    <div class="row no-wrap">
+    <div class="row no-wrap items-center">
       <div class="col">
-        <q-file v-model="file" label="Escolha um arquivo" filled standout="bg-orange-3" @input="handleFileUpload" />
+        <q-file v-model="file" class="input-file-chart" label="Escolha um arquivo" filled standout="bg-orange-3"
+          @input="handleFileUpload" />
       </div>
       <div class="col-auto">
-        <q-btn type="submit" label="Upload" class="q-ma-md" color="primary" />
+        <q-btn type="submit" label="Upload" class="q-ma-md input-file-chart" color="primary" />
       </div>
     </div>
   </form>
@@ -30,6 +31,8 @@ export default defineComponent({
 
     async function submitFile() {
       try {
+        emit('loading-start');
+
         if (!file.value) {
           throw new Error('Por favor, selecione um arquivo antes de fazer o upload!');
         }
@@ -45,6 +48,8 @@ export default defineComponent({
         let formData = new FormData();
         formData.append('file', file.value);
 
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         const response = await axios.post('http://localhost:3000/upload', formData);
         console.log(response.data);
         $q.notify({
@@ -52,20 +57,21 @@ export default defineComponent({
           message: 'Upload bem-sucedido!'
         });
         chartData.value = response.data;
-        console.log('updateData', chartData.value)
         emit('updateData', chartData.value);
       } catch (error: any) {
         $q.notify({
           type: 'negative',
           message: error.message
         });
+      } finally {
+        emit('loading-end');
       }
     }
 
     return {
       file,
       handleFileUpload,
-      submitFile
+      submitFile,
     }
   }
 });

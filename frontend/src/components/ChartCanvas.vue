@@ -35,7 +35,7 @@ export default defineComponent({
         let chart: Chart<'line', number[], string> | null = null;
 
         const chartData = computed(() => {
-            const labels = props.data.map(item => formatMonth(item.labels));
+            const labels = props.data.map(item => item.labels);
             const data = props.data.map(item => item.data);
 
             return {
@@ -49,12 +49,6 @@ export default defineComponent({
                 }]
             };
         });
-
-        const formatMonth = (label: string) => {
-            const [year, month] = label.split('-');
-            const monthName = new Date(`${year}-${month}-01`).toLocaleString('default', { month: 'short' });
-            return `${monthName}/${year.slice(-2)}`;
-        };
 
         const createChart = () => {
             if (chartCanvas.value) {
@@ -131,7 +125,6 @@ export default defineComponent({
         };
 
         watch(chartData, updateChart, { deep: true });
-
         onMounted(createChart);
 
         return {
