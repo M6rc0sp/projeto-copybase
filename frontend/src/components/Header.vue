@@ -5,8 +5,8 @@
                 <div class="col-3">
                     <q-space />
                 </div>
-                <div class="col-6 text-center">
-                    6host
+                <div class="col-6 text-center" style="font-family: 'Roboto', sans-serif;">
+                    MetricAnalyzer
                 </div>
                 <div class="col-3 row items-center">
                     <!-- <div class="col-2">
@@ -22,9 +22,9 @@
         </q-toolbar>
 
         <q-tabs align="center">
-            <q-route-tab to="/" label="Home" />
-            <q-route-tab to="/analysis" label="Analisar" />
-            <q-route-tab to="/about" label="Sobre" />
+            <q-route-tab to="/" :label="$t('header.home')" />
+            <q-route-tab to="/analysis" :label="$t('header.analyze')" />
+            <q-route-tab to="/about" :label="$t('header.about')" />
         </q-tabs>
     </q-header>
 </template>
@@ -43,7 +43,7 @@ export default {
         },
         changeLocale() {
             this.$i18n.locale = this.selectedLocale;
-            console.log('Locale após a mudança:', this.$i18n.locale);
+            // console.log('Locale após a mudança:', this.$i18n.locale);
         },
     },
     created() {
@@ -51,11 +51,6 @@ export default {
         if (darkMode) {
             this.$q.dark.set(darkMode === 'dark');
         }
-    },
-    watch: {
-        '$i18n.locale': function (newVal, oldVal) {
-            console.log('Idioma alterado de', oldVal, 'para', newVal);
-        },
     },
 };
 </script>

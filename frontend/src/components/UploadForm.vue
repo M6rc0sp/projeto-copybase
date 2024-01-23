@@ -2,10 +2,11 @@
   <form @submit.prevent="submitFile">
     <div class="row no-wrap items-center">
       <div class="col">
-        <q-file v-model="file" class="input-file-chart" label="Escolha um arquivo" filled @input="handleFileUpload" />
+        <q-file v-model="file" class="input-file-chart" :label="$t('analyze.selectHint')" filled
+          @input="handleFileUpload" />
       </div>
       <div class="col-auto">
-        <q-btn type="submit" label="Upload" class="q-ma-md input-file-chart" color="primary" />
+        <q-btn type="submit" :label="$t('analyze.buttonTitle')" class="q-ma-md input-file-chart" color="primary" />
       </div>
     </div>
   </form>
@@ -28,12 +29,12 @@ export default defineComponent({
       file.value = target.files ? target.files[0] : null;
     }
 
-    async function submitFile() {
+    async function submitFile(this: any) {
       try {
         emit('loading-start');
 
         if (!file.value) {
-          throw new Error('Por favor, selecione um arquivo antes de fazer o upload!');
+          throw new Error(this.$t('analyze.noFileError'));
         }
 
         let fileName = file.value.name;
@@ -41,7 +42,7 @@ export default defineComponent({
 
         if (fileExtension !== 'csv' && fileExtension !== 'xlsx') {
           file.value = null;
-          throw new Error('Formato de arquivo inválido. Por favor, envie um arquivo .csv ou .xlsx');
+          throw new Error(this.$t('analyze.invalidFileError'));
         }
 
         let formData = new FormData();
@@ -53,7 +54,7 @@ export default defineComponent({
         console.log(response.data);
         $q.notify({
           type: 'positive',
-          message: 'Upload bem-sucedido!'
+          message: this.$t('analyze.successMessage')
         });
         chartData.value = response.data;
         emit('updateData', chartData.value);

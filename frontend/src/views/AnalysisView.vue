@@ -2,7 +2,7 @@
   <q-page class="row" padding>
     <q-card class="col-12 col-lg-8">
       <q-card-section class="bg-primary text-white">
-        <div class="text-h6">Envie seu arquivo CSV/XLSX para ver as análises de MRR e ChurnRate da sua empresa</div>
+        <div class="text-h6">{{ $t('analyze.titleUpload') }}</div>
       </q-card-section>
       <q-card-section>
         <UploadForm @updateData="handleUpdateData" @loading-start="startLoading" @loading-end="endLoading" />
@@ -11,7 +11,7 @@
         <div v-if="state.isLoading" class="row q-mt-xl justify-center items-center">
           <div class="flex flex-center q-pa-md">
             <q-spinner color="primary" size="60px" />
-            <h5 class="q-pl-md">Carregando...</h5>
+            <h5 class="q-pl-md">{{ $t('analyze.loading') }}</h5>
           </div>
         </div>
         <div v-else>
