@@ -2,8 +2,7 @@
   <form @submit.prevent="submitFile">
     <div class="row no-wrap items-center">
       <div class="col">
-        <q-file v-model="file" class="input-file-chart" label="Escolha um arquivo" filled standout="bg-orange-3"
-          @input="handleFileUpload" />
+        <q-file v-model="file" class="input-file-chart" label="Escolha um arquivo" filled @input="handleFileUpload" />
       </div>
       <div class="col-auto">
         <q-btn type="submit" label="Upload" class="q-ma-md input-file-chart" color="primary" />

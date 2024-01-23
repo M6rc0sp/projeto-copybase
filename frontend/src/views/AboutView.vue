@@ -2,21 +2,23 @@
   <q-page padding>
     <div class="row justify-center">
       <div class="col-12 col-lg-8">
-        <q-card class="q-pa-sm">
+        <q-card class="q-ma-md">
+          <q-card-section class="bg-primary text-white">
+            <div class="text-h6">Sobre esse projeto</div>
+          </q-card-section>
           <q-card-section>
-            <div class="text-h4">Sobre este projeto</div>
             <p>
               Este projeto foi um desafio para desenvolver uma aplicação web full-stack usando Vue.js e NestJS.
               A aplicação permite aos usuários carregar uma planilha de dados de assinantes e visualizar métricas chave de
               negócios em gráficos interativos.
             </p>
-            <div class="text-h5 q-my-md">Tecnologias usadas</div>
+            <div class="text-h6 q-my-md">Tecnologias usadas</div>
             <p>
               Este projeto foi desenvolvido usando várias tecnologias, incluindo Vue.js para o front-end, NestJS para o
               back-end,
               e Chart.js para a visualização de dados.
             </p>
-            <div class="text-h5 q-my-md">Desafios superados</div>
+            <div class="text-h6 q-my-md">Desafios superados</div>
             <p>
               Embora eu não tivesse experiência prévia com Vue e Nest, eu fui capaz de aprender rapidamente e aplicar as
               melhores

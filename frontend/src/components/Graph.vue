@@ -1,12 +1,24 @@
 <template>
   <div v-if="hasData" class="row chart">
-    <div class="col-12 col-lg-8">
-      <h1 class="text-h4">MRR</h1>
-      <ChartCanvas v-show="hasData" :data="mrrChartData" label="MRR" color="rgb(75, 192, 192)" />
+    <div class="col-12 col-lg-9">
+      <q-card flat bordered>
+        <q-card-section class="bg-primary text-white">
+          <div class="text-h6">MRR</div>
+        </q-card-section>
+        <q-card-section>
+          <ChartCanvas v-show="hasData" :data="mrrChartData" label="MRR" color="rgb(75, 192, 192)" />
+        </q-card-section>
+      </q-card>
     </div>
-    <div class="col-12 col-lg-8">
-      <h1 class="text-h4">Churn Rate</h1>
-      <ChartCanvas v-show="hasData" :data="churnRateChartData" label="Churn Rate" color="rgb(255, 99, 132)" />
+    <div class="col-12 col-lg-9 q-mt-md">
+      <q-card flat bordered>
+        <q-card-section class="bg-primary text-white">
+          <div class="text-h6">Churn Rate</div>
+        </q-card-section>
+        <q-card-section>
+          <ChartCanvas v-show="hasData" :data="churnRateChartData" label="Churn Rate" color="rgb(255, 99, 132)" />
+        </q-card-section>
+      </q-card>
     </div>
   </div>
 </template>
