@@ -1,16 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: metricanalyzer-backend
+  name: metricanalyzerweb
+  labels:
+    app: metricanalyzer
 spec:
-  replicas: 3
   selector:
     matchLabels:
-      app: metricanalyzer-backend
+      app: metricanalyzer
+      tier: web
   template:
     metadata:
       labels:
-        app: metricanalyzer-backend
+        app: metricanalyzer
+        tier: web
     spec:
       containers:
       - name: metricanalyzer-backend
@@ -21,11 +24,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: metricanalyzer-service
+  name: metricanalyzerweb
+  labels:
+    app: metricanalyzer
 spec:
-  type: LoadBalancer
+  selector:
+    app: metricanalyzer
+    tier: web
   ports:
   - port: 80
     targetPort: 3000
-  selector:
-    app: metricanalyzer-backend
+  type: LoadBalancer
+  loadBalancerIP: "34.173.242.89"
