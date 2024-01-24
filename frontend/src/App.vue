@@ -1,4 +1,5 @@
 <template>
+  <SpeedInsights />
   <q-layout view="hhh LpR fff">
 
     <Header />
@@ -12,15 +13,8 @@
   </q-layout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import Footer from './components/Footer.vue';
 import Header from './components/Header.vue';
-
-export default {
-  name: 'App',
-  components: {
-    Footer,
-    Header,
-  },
-};
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 </script>

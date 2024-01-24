@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@vercel/speed-insights": "^1.0.7",
     "@vue/cli-shared-utils": "^5.0.8",
     "chart.js": "^4.4.1",
     "dompurify": "^3.0.8",
