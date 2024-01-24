@@ -3,12 +3,12 @@ FROM node:lts AS development
 
 WORKDIR /usr/src/app
 
-COPY ./package*.json ./
+COPY ./backend/package*.json ./
 
 RUN npm install glob rimraf
 RUN npm install --only=development
 
-COPY . .
+COPY ./backend .
 
 RUN npm run build
 

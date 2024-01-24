@@ -38,6 +38,7 @@ export default {
         invalidFileError: 'Por favor, selecione um arquivo CSV ou XLSX!',
         successMessage: 'Arquivo enviado com sucesso!',
         loading: 'Carregando...',
+        serverError: 'Erro ao tentar conectar ao servidor!',
     },
     about: {
         titleProject: 'Sobre esse projeto',

@@ -51,6 +51,7 @@ export default defineComponent({
         await new Promise(resolve => setTimeout(resolve, 500));
 
         const response = await axios.post('http://34.71.35.56/upload', formData);
+        console.log(response);
         console.log(response.data);
         $q.notify({
           type: 'positive',
@@ -59,10 +60,17 @@ export default defineComponent({
         chartData.value = response.data;
         emit('updateData', chartData.value);
       } catch (error: any) {
-        $q.notify({
-          type: 'negative',
-          message: error.message
-        });
+        if (error.message.includes('net::ERR_NAME_NOT_RESOLVED')) {
+          $q.notify({
+            type: 'negative',
+            message: this.$t('analyze.serverError')
+          });
+        } else {
+          $q.notify({
+            type: 'negative',
+            message: error.message
+          });
+        }
       } finally {
         emit('loading-end');
       }
