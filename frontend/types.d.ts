@@ -1,5 +1,5 @@
-declare module 'global' {
+declare module "global" {
     interface ImportMeta {
-        env: Record<string, string>
+        env: any;
     }
 }
