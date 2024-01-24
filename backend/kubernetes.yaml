@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metricanalyzer-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: metricanalyzer-backend
+  template:
+    metadata:
+      labels:
+        app: metricanalyzer-backend
+    spec:
+      containers:
+      - name: metricanalyzer-backend
+        image: gcr.io/nestjs-backend-412213/metricanalyzer-backend
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metricanalyzer-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: metricanalyzer-backend

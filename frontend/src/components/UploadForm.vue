@@ -50,7 +50,7 @@ export default defineComponent({
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        const response = await axios.post('http://localhost:3000/upload', formData);
+        const response = await axios.post('http://34.71.35.56/upload', formData);
         console.log(response.data);
         $q.notify({
           type: 'positive',

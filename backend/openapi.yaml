@@ -1,0 +1,22 @@
+swagger: "2.0"
+info:
+  title: "MetricAnalyzer API"
+  description: "API para upload de CSV e XLSX e consulta de dados"
+  version: "1.0.0"
+host: "nestjs-backend-412213.appspot.com"
+paths:
+  /upload:
+    post:
+      summary: Upload a file
+      operationId: uploadFile
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: file
+          type: string
+          format: byte
+          description: The base64 encoded file to upload.
+      responses:
+        '200':
+          description: File uploaded successfully
