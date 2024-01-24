@@ -52,7 +52,7 @@ export default defineComponent({
 
         //kubernetes service name
         //const response = await axios.post('http://api.metricanalyzerbackend.com/upload', formData);
-        const response = await axios.post('http://locahlhost:3000/upload', formData);
+        const response = await axios.post('http://localhost:3000/upload', formData);
         $q.notify({
           type: 'positive',
           message: this.$t('analyze.successMessage')
