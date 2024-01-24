@@ -1,7 +1,6 @@
 import 'quasar/dist/quasar.css'
 
 import { createApp } from 'vue'
-// import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import messages from './locales/messages'
 
@@ -17,7 +16,6 @@ const i18n = createI18n({
 
 const app = createApp(App).use(i18n).use(Quasar, quasarUserOptions)
 
-// app.use(createPinia())
 app.use(router)
 
 app.mount('#app')

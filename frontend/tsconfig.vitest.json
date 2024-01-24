@@ -7,7 +7,8 @@
     "src/**/*.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "test.config.ts"
+    "test.config.ts",
+    "src/config.js"
   ],
   "compilerOptions": {
     "composite": true,

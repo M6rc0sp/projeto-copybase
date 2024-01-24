@@ -50,9 +50,9 @@ export default defineComponent({
 
         await new Promise(resolve => setTimeout(resolve, 500));
 
-        //kubernetes service name
-        //const response = await axios.post('http://api.metricanalyzerbackend.com/upload', formData);
-        const response = await axios.post('http://localhost:3000/upload', formData);
+        const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:3000';
+
+        const response = await axios.post(API_URL + '/upload', formData);
         $q.notify({
           type: 'positive',
           message: this.$t('analyze.successMessage')
