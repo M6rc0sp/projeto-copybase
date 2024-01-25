@@ -52,6 +52,8 @@ export default defineComponent({
 
         const API_URL = import.meta.env.VITE_APP_API_URL || 'http://localhost:3000';
 
+        console.log(import.meta.env);
+
         const response = await axios.post(API_URL + '/upload', formData);
         $q.notify({
           type: 'positive',
