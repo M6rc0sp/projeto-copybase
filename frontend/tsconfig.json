@@ -1,9 +1,5 @@
 {
-  "files": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/shims-vue.d.ts"
-  ],
+  "files": [],
   "references": [
     {
       "path": "./tsconfig.node.json"
