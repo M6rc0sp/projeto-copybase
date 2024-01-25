@@ -4,8 +4,12 @@ declare module "*.vue" {
     export default component;
 }
 
+interface ImportMetaEnv {
+    VITE_APP_API_URL: string;
+}
+
 declare module "global" {
     interface ImportMeta {
-        env: any;
+        env: ImportMetaEnv;
     }
 }

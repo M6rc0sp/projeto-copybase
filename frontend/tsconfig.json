@@ -1,6 +1,8 @@
 {
   "files": [
-    "src/shims-vue.d.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/shims-vue.d.ts"
   ],
   "references": [
     {
